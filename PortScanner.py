@@ -21,28 +21,33 @@ def scan_host(host, port, r_code = 1):
 
 	return r_code
 
-try:
-	host = raw_input("[*] Endereco Alvo: ")
-except KeyboardInterrupt:
-	print("\n[*] Saindo da Aplicacao...")
-	sys.exit(1)
+def scan_ports():
+	for port in range(min_port, max_port):
+		try:
+			response = scan_host(host, port)
 
-hostip = gethostbyname(host)
+			if not response:
+				print("[*] Porta %d: Aberta" % (port))
+		except Exception, e:
+			pass
+		except KeyboardInterrupt:
+			print("\n[*] Saindo da Aplicacao...")
+			sys.exit(1)
+def get_host()		
+	try:
+		host = raw_input("[*] Endereco Alvo: ")
+	except KeyboardInterrupt:
+		print("\n[*] Saindo da Aplicacao...")
+		sys.exit(1)
+
+	hostip = gethostbyname(host)
+
+get_host()
 print("\n[*] Host: %s IP: %s" % (host, hostip))
 print("[*] Analizando, Inicio: %s \n" % (time.strftime("%H:%M:%S")))
 start_time = datetime.now()
 
-for port in range(min_port, max_port):
-	try:
-		response = scan_host(hostip, port)
-
-		if not response:
-			print("[*] Porta %d: Aberta" % (port))
-	except Exception, e:
-		pass
-	except KeyboardInterrupt:
-		print("\n[*] Saindo da Aplicacao...")
-		sys.exit(1)
+scan_ports()
 
 stop_time = datetime.now()
 total_duration = stop_time-start_time
